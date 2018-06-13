@@ -3,7 +3,7 @@ class naza_interface_manual{
 	public:
 		// A: For roll control (left/right)
 		// E: For pitch control (front/back)
-		// T: For throttle control 
+		// T: For throttle control
 		// R: For rudder control
 		// U: For Control Model Switch
 		void configure_pins(int A, int E, int T, int R, int U);

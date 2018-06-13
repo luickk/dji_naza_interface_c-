@@ -1,6 +1,6 @@
 #include "wiringPi.h"
 
-#include "naza_interface/naza_interface.h"
+#include "src/naza_interface_manual.h"
 
 #include <iostream>
 
@@ -8,8 +8,8 @@
 int main(){
 	std::cout << "lool";
 
-	naza_interface ni;
+	naza_interface_manual ni;
 
-	ni.configure_pins();
+	ni.configure_pins(8,8,8,8,8);
 
 }
