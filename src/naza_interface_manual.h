@@ -1,6 +1,8 @@
 
 class naza_interface_manual{
 	public:
+		naza_interface_manual();
+
 		// A: For roll control (left/right)
 		// E: For pitch control (front/back)
 		// T: For throttle control

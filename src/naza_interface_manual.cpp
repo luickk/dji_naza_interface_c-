@@ -7,6 +7,12 @@
 #include "naza_interface_manual.h"
 #include "PCA9685/pca9685.h"
 
+naza_interface_manual::naza_interface_manual(){
+
+	std::cout << "Starting Naza Interface";
+
+}
+
 void naza_interface_manual::configure_pins(int A, int E, int T, int R, int U){
 	uint16_t OnValue, OffValue;
 
