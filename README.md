@@ -15,14 +15,14 @@ Dependencies
 Pwm Reference
 -------------------
 
-### - Naza V2 
+### Naza V2 
 The Naza V2 can adapt to different controll interfaces. PWM, PPM and S-Bus are possible.
 Here I will focus on PWM since that is the one I chose to use to communicate. It's one of the simplest 
 ways to communicate with the Naza.
 
-PWM input signal:
-Hz: 50
-Pulse: 0.5-2.5 ms
+PWM input signal: <br> 
+Hz: 50 <br>
+Pulse: 0.5-2.5 ms <br>
 
 To generate a proper signal you need to calculate the relative pulse length. For that you need two other values which represent the overall pulse period and the pulse length. The difference of both mustn't be greater than the period itself. The period is decomposed in 4096 values which is equivalent to a 12 Bit accuracy (2^12). So the difference of both of those values mustn't be greater than 4096. This relative pulse length can be calculated by multiplying the Hz rate, the period length and the pulse length together.
 
