@@ -1,7 +1,11 @@
+#ifndef NAZA_INTERFACE_MANUAL_H_
+#define NAZA_INTERFACE_MANUAL_H_
 
-class naza_interface_manual{
+
+
+class naza_interface_manual_c{
 	public:
-		naza_interface_manual();
+		naza_interface_manual_c();
 
 		// A: For roll control (left/right)
 		// E: For pitch control (front/back)
@@ -18,3 +22,6 @@ class naza_interface_manual{
 		void fly_right(int speed);
 
 };
+
+
+#endif

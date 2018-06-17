@@ -1,5 +1,8 @@
 output: test.o
-		g++ -o test -L/usr/local/ test.o -lnazainterface
+		g++ -L/usr/lib/ -lnaza -o test test.o
 
 test.o:
 		g++ -c test.cpp
+
+clean:
+		rm -f *.o

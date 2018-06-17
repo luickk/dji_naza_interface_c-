@@ -1,11 +1,8 @@
 #include <iostream>
-#include "naza_interface_manual.h"
+#include "libnaza/pca9685.h"
+//#include "libnaza/naza_interface_manual.h"
 
 int main(){
-
-	std::cout << "Checking pins!";
-
-	naza_interface_manual n;
-
-	n.check_pins();
+	std::cout << "lool";
+	naza_interface_manual_c c;
 }
