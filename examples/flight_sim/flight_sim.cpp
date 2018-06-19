@@ -27,30 +27,30 @@ int main(){
     int pwm_value = atoi(pwm_val.c_str());
 
     if(ch_val=="forward"){
-      std::cout << "Flying forward: " << pwm_value << "\n";
+     	std::cout << "Flying forward: " << pwm_value << "\n";
     	naza.fly_forward(cf, pca9685, pwm_value);
     } else if(ch_val=="back"){
-      std::cout << "Flying back: " << pwm_value << "\n";
-      naza.fly_back(cf, pca9685, pwm_value);
+      	std::cout << "Flying back: " << pwm_value << "\n";
+      	naza.fly_back(cf, pca9685, pwm_value);
 
     } else if(ch_val=="throttle"){
-      std::cout << "Setting throttle: " << pwm_value << "\n";
+      	std::cout << "Setting throttle: " << pwm_value << "\n";
     	naza.fly_throttle(cf, pca9685, pwm_value);
 
     } else if(ch_val=="left"){
-      std::cout << "Flying left: " << pwm_value << "\n";
+      	std::cout << "Flying left: " << pwm_value << "\n";
     	naza.fly_left(cf, pca9685, pwm_value);
 
     } else if(ch_val=="right"){
-      std::cout << "Flying right: " << pwm_value << "\n";
+      	std::cout << "Flying right: " << pwm_value << "\n";
     	naza.fly_right(cf, pca9685, pwm_value);
 
     } else if(ch_val=="tright"){
-      std::cout << "Turning right: " << pwm_value << "\n";
+      	std::cout << "Turning right: " << pwm_value << "\n";
     	naza.fly_turn_right(cf, pca9685, pwm_value);
 
     } else if(ch_val=="tleft"){
-      std::cout << "Turning left: " << pwm_value << "\n";
+      	std::cout << "Turning left: " << pwm_value << "\n";
     	naza.fly_turn_left(cf, pca9685, pwm_value);
 
     }

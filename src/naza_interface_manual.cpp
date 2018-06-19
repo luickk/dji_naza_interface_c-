@@ -57,13 +57,13 @@ void naza_interface_manual_c::fly_left(ConfigFile &cf, PCA9685 &pca9685, int spe
 }
 
 void naza_interface_manual_c::fly_right(ConfigFile &cf, PCA9685 &pca9685, int speed){
-        int rel_pwm=calc_pwm_gradient_left(speed, cf.Value("A","left"), cf.Value("A","middle"), cf.Value("A","right"));
+        int rel_pwm=calc_pwm_gradient_right(speed, cf.Value("A","left"), cf.Value("A","middle"), cf.Value("A","right"));
         cout << "Flying Right with Relative PWM signal: " << rel_pwm << " which is " << speed << " \n";
         pca9685.Write(CHANNEL(cf.Value("A","channel")), VALUE(rel_pwm));
 }
 
 void naza_interface_manual_c::fly_turn_right(ConfigFile &cf, PCA9685 &pca9685, int speed){
-        int rel_pwm=calc_pwm_gradient_left(speed, cf.Value("R","left"), cf.Value("R","middle"), cf.Value("R","right"));
+        int rel_pwm=calc_pwm_gradient_right(speed, cf.Value("R","left"), cf.Value("R","middle"), cf.Value("R","right"));
         cout << "Turning Right with Relative PWM signal: " << rel_pwm << " which is " << speed << " \n";
         pca9685.Write(CHANNEL(cf.Value("R","channel")), VALUE(rel_pwm));
 }
@@ -114,8 +114,9 @@ void naza_interface_manual_c::recalibrate(ConfigFile &cf, PCA9685 &pca9685){
 		cout << "Recalibration of channel R (2/2)" << " \n";
 		pca9685.Write(CHANNEL(cf.Value("R","channel")), VALUE(cf.Value("R","right")));
 }
+
 int naza_interface_manual_c::calc_pwm_gradient_right(int speed_in_perc,int left, int middle, int right){
-        int gradient = 0;
+        float gradient = 0;
 	if(middle>right){
 		gradient=middle-right;
         	gradient=gradient/100;
@@ -132,7 +133,7 @@ int naza_interface_manual_c::calc_pwm_gradient_right(int speed_in_perc,int left,
 
 
 int naza_interface_manual_c::calc_pwm_gradient_left(int speed_in_perc,int left, int middle, int right){
-        int gradient = 0;
+        float gradient = 0;
         if(middle>left){
                 gradient=middle-left;
                 gradient=gradient/100;
@@ -148,12 +149,12 @@ int naza_interface_manual_c::calc_pwm_gradient_left(int speed_in_perc,int left, 
 }
 
 int naza_interface_manual_c::calc_pwm_gradient_throttle(int speed_in_perc,int left, int right){
-        int gradient = 0;
+        float gradient = 0;
         if(right>left){
                 gradient=right-left;
-                gradient=gradient/100;
+		gradient=gradient/100;
                 gradient=gradient*speed_in_perc;
-                gradient=gradient+left;
+		gradient=gradient+left;
         } else if(right<left){
                 gradient=left-right;
                 gradient=gradient/100;
