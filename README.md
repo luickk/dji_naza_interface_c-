@@ -53,7 +53,6 @@ Dependencies
 Pwm Reference
 -------------------
 
-### Naza V2 
 The Naza V2 can adapt to different controll interfaces. PWM, PPM and S-Bus are possible.
 Here I will focus on PWM since that is the one I chose to use to communicate. It's one of the simplest 
 ways to communicate with the Naza.
