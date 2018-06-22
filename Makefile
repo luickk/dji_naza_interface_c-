@@ -32,7 +32,7 @@ install: real_uninstall
 	@cp src/*.h "$(PREFIX)/include/$(LIB_NAME)"
 	@cp build/$(LIB_SO_NAME) "$(PREFIX)/lib"
 	@mkdir -p "/etc/naza"
-	@mv pwm_config.txt.template /etc/naza/pwm_config.txt | true
+	@cp -vn template/pwm_config.txt.template /etc/naza/pwm_config.txt | true
 
 uninstall: uninstall_banner real_uninstall
 

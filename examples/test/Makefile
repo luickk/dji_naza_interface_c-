@@ -2,7 +2,7 @@ all: test
 
 test: test.o
 		g++ -L/usr/lib/ -lnaza -o test.exe test.o
-		
+
 test.o:
 		g++ -c test.cpp
 
