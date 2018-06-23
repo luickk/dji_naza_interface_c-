@@ -154,12 +154,12 @@ int naza_interface_manual_c::calc_pwm_gradient_throttle(int speed_in_perc,int le
                 gradient=right-left;
 		gradient=gradient/100;
                 gradient=gradient*speed_in_perc;
-		gradient=gradient+left;
+		gradient=left-gradient;
         } else if(right<left){
                 gradient=left-right;
                 gradient=gradient/100;
                 gradient=gradient*speed_in_perc;
-                gradient=gradient+right;
+                gradient=left-gradient;
         }
         return gradient;
 }
