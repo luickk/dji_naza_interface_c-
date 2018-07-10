@@ -74,6 +74,19 @@ void naza_interface_manual_c::fly_turn_left(ConfigFile &cf, PCA9685 &pca9685, in
         pca9685.Write(CHANNEL(cf.Value("R","channel")), VALUE(rel_pwm));
 }
 
+void naza_interface_manual_c::arm_motors(ConfigFile &cf, PCA9685 &pca9685){
+        cout << "-------- ARMING MOTORS --------" << "\n";
+        fly_left(cf, pca9685, 100);
+	fly_back(cf, pca9685, 100);
+	fly_throttle(cf, pca9685, 0);
+	fly_turn_left(cf, pca9685, 100);
+
+	sleep(2);
+
+	set_neutral(cf, pca9685);
+}
+
+
 void naza_interface_manual_c::set_flight_mode(ConfigFile &cf, PCA9685 &pca9685, std::string mode){
         if(mode=="gps"){
 		pca9685.Write(CHANNEL(cf.Value("U","channel")), VALUE(cf.Value("U", "gps")));
@@ -127,6 +140,14 @@ void naza_interface_manual_c::recalibrate(ConfigFile &cf, PCA9685 &pca9685){
 		sleep(1);
 		cout << "Recalibration of channel R (2/2)" << " \n";
 		pca9685.Write(CHANNEL(cf.Value("R","channel")), VALUE(cf.Value("R","right")));
+
+   		sleep(1);
+                cout << "Recalibration of channel U (1/2)" << " \n";
+                pca9685.Write(CHANNEL(cf.Value("U","channel")), VALUE(cf.Value("U","gps")));
+                sleep(1);
+                cout << "Recalibration of channel U (2/2)" << " \n";
+                pca9685.Write(CHANNEL(cf.Value("U","channel")), VALUE(cf.Value("U","selectable")));
+
 }
 
 int naza_interface_manual_c::calc_pwm_gradient_right(int speed_in_perc,int left, int middle, int right){

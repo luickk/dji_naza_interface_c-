@@ -17,11 +17,10 @@ int main(){
   pca9685.SetFrequency(50);
 
   while(1){
-  std::cout << "Enter func(forward,back,throttle,left,right,tright,tleft): ";
+  std::cout << "Enter func(forward,back,throttle,left,right,tright,tleft,flm,neutral,(arm << danger)): ";
   std::string ch_val;
   std::getline(std::cin, ch_val);
-  if(ch_val=="forward" || ch_val=="back" || ch_val=="throttle" || ch_val=="left" || ch_val=="right" || ch_val=="tright" || ch_val=="tleft" || ch_val=="flm"){
-    cout << "Flight mode: " << ch_val << " \n";
+  if(ch_val=="forward" || ch_val=="back" || ch_val=="throttle" || ch_val=="left" || ch_val=="right" || ch_val=="tright" || ch_val=="tleft" || ch_val=="flm" || ch_val=="neutral" || ch_val=="arm"){
     std::string pwm_val;
     std::getline(std::cin, pwm_val);
     int pwm_value = atoi(pwm_val.c_str());
@@ -56,6 +55,12 @@ int main(){
     } else if(ch_val=="flm"){
 	std::cout << "Setting Flight Mode: " << pwm_val << "\n";
 	naza.set_flight_mode(cf, pca9685, pwm_val);
+
+    } else if(ch_val=="arm"){
+	naza.arm_motors(cf, pca9685);
+
+    } else if(ch_val=="neutral"){
+    	naza.set_neutral(cf, pca9685);
     }
 
     } else {
