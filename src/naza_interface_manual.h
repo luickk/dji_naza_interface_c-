@@ -6,6 +6,8 @@
 #include "pca9685.h"
 #include "ConfigFile.h"
 
+using namespace std;
+
 class naza_interface_manual_c{
 	public:
 
@@ -22,6 +24,7 @@ class naza_interface_manual_c{
 
 		void set_neutral(ConfigFile &cf, PCA9685 &pca9685);
 		void recalibrate(ConfigFile &cf, PCA9685 &pca9685);
+		void set_flight_mode(ConfigFile &cf, PCA9685 &pca9685, string mode);
 
 	private:
 		int calc_pwm_gradient_right(int speed_in_perc, int left, int middle, int right);

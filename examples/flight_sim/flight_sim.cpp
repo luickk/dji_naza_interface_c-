@@ -20,7 +20,7 @@ int main(){
   std::cout << "Enter func(forward,back,throttle,left,right,tright,tleft): ";
   std::string ch_val;
   std::getline(std::cin, ch_val);
-  if(ch_val=="forward" || ch_val=="back" || ch_val=="throttle" || ch_val=="left" || ch_val=="right" || ch_val=="tright" || ch_val=="tleft"){
+  if(ch_val=="forward" || ch_val=="back" || ch_val=="throttle" || ch_val=="left" || ch_val=="right" || ch_val=="tright" || ch_val=="tleft" || ch_val=="flm"){
     cout << "Flight mode: " << ch_val << " \n";
     std::string pwm_val;
     std::getline(std::cin, pwm_val);
@@ -53,9 +53,12 @@ int main(){
       	std::cout << "Turning left: " << pwm_value << "\n";
     	naza.fly_turn_left(cf, pca9685, pwm_value);
 
+    } else if(ch_val=="flm"){
+	std::cout << "Setting Flight Mode: " << pwm_val << "\n";
+	naza.set_flight_mode(cf, pca9685, pwm_val);
     }
 
-  } else {
+    } else {
     cout << "Func not found \n";
   }
   }

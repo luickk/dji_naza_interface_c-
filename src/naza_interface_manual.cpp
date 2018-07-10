@@ -19,7 +19,7 @@ naza_interface_manual_c::naza_interface_manual_c(ConfigFile &cf, PCA9685 &pca968
 	cout << "E Channel PWM Values " << "left: " << cf.Value("E", "left") << " middle: " << cf.Value("E", "middle") << " right: " << cf.Value("E", "right") << "\n";
 	cout << "T Channel PWM Values " << "left: " << cf.Value("T", "left") << " right: " << cf.Value("T", "right") << "\n";
 	cout << "R Channel PWM Values " << "left: " << cf.Value("R", "left") << " middle: " << cf.Value("R", "middle") << " right: " << cf.Value("R", "right") << "\n";
-	cout << "U Channel PWM Values " << "GPS: " << cf.Value("U", "GPS") << " Failsafe: " << cf.Value("U", "Failsafe") << " Atti: " << cf.Value("U", "Atti") << "\n";
+	cout << "U Channel PWM Values " << "GPS: " << cf.Value("U", "gps") << " Failsafe: " << cf.Value("U", "failsafe") << " Selectable: " << cf.Value("U", "selectable") << "\n";
 	cout << "-" << "\n";
 
 	set_neutral(cf, pca9685);
@@ -73,6 +73,20 @@ void naza_interface_manual_c::fly_turn_left(ConfigFile &cf, PCA9685 &pca9685, in
         cout << "Turning Left with Relative PWM signal: " << rel_pwm << " which is " << speed << " \n";
         pca9685.Write(CHANNEL(cf.Value("R","channel")), VALUE(rel_pwm));
 }
+
+void naza_interface_manual_c::set_flight_mode(ConfigFile &cf, PCA9685 &pca9685, std::string mode){
+        if(mode=="gps"){
+		pca9685.Write(CHANNEL(cf.Value("U","channel")), VALUE(cf.Value("U", "gps")));
+		cout << "Setting flight mode: " << mode << " \n";
+	} else if(mode=="failsafe"){
+		pca9685.Write(CHANNEL(cf.Value("U","channel")), VALUE(cf.Value("U", "failsafe")));
+		cout << "Setting flight mode: " << mode << " \n";
+	} else if(mode=="selectable"){
+		pca9685.Write(CHANNEL(cf.Value("U","channel")), VALUE(cf.Value("U", "selectable")));
+		cout << "Setting flight mode: " << mode << " \n";
+	}
+}
+
 
 void naza_interface_manual_c::set_neutral(ConfigFile &cf, PCA9685 &pca9685){
 		fly_back(cf, pca9685, 0);
