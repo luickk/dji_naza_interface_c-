@@ -1,28 +1,38 @@
 [A]
 
-left=0
-middle=0
-right=0
+left=400
+middle=315
+right=220
+stick_motion=norm
+channel=0
 
 [E]
 
-left=0
-middle=0
-right=0
+left=400
+middle=315
+right=220
+stick_motion=norm
+channel=1
 
 [T]
 
-left=0
-right=0
+left=400
+right=230
+stick_motion=norm
+channel=2
 
 [R]
 
-left=0
-middle=0
-right=0
+left=400
+middle=315
+right=220
+stick_motion=norm
+channel=3
 
 [U]
 
-GPS=0
-Failsafe=0
-Atti=0
+gps=390
+failsafe=350
+selectable=250
+channel=4
+

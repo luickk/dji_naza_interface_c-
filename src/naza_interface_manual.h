@@ -27,9 +27,9 @@ class naza_interface_manual_c{
 		void set_flight_mode(ConfigFile &cf, PCA9685 &pca9685, string mode);
 		void arm_motors(ConfigFile &cf, PCA9685 &pca9685);
 	private:
-		int calc_pwm_gradient_right(int speed_in_perc, int left, int middle, int right);
-		int calc_pwm_gradient_left(int speed_in_perc, int left, int middle, int right);
-		int calc_pwm_gradient_throttle(int speed_in_perc,int left, int right);
+		int calc_pwm_gradient_right(string stick_motion, int speed_in_perc, int left, int middle, int right);
+		int calc_pwm_gradient_left(string stick_motion, int speed_in_perc, int left, int middle, int right);
+		int calc_pwm_gradient_throttle(string stick_motion, int speed_in_perc,int left, int right);
 };
 
 

@@ -33,50 +33,50 @@ naza_interface_manual_c::~naza_interface_manual_c(){
 }
 
 void naza_interface_manual_c::fly_forward(ConfigFile &cf, PCA9685 &pca9685, int speed){
-        int rel_pwm=calc_pwm_gradient_right(speed, cf.Value("E","left"), cf.Value("E","middle"), cf.Value("E","right"));
+        int rel_pwm=calc_pwm_gradient_right(cf.Value("E","stick_motion"), speed, cf.Value("E","left"), cf.Value("E","middle"), cf.Value("E","right"));
 	cout << "Flying Forward with Relative PWM signal: " << rel_pwm << " which is " << speed << " \n";
 	pca9685.Write(CHANNEL(cf.Value("E","channel")), VALUE(rel_pwm));
 }
 
 void naza_interface_manual_c::fly_back(ConfigFile &cf, PCA9685 &pca9685, int speed){
-        int rel_pwm=calc_pwm_gradient_left(speed, cf.Value("E","left"), cf.Value("E","middle"), cf.Value("E","right"));
+        int rel_pwm=calc_pwm_gradient_left(cf.Value("E","stick_motion"), speed, cf.Value("E","left"), cf.Value("E","middle"), cf.Value("E","right"));
         cout << "Flying Back with Relative PWM signal: " << rel_pwm << " which is " << speed << " \n";
         pca9685.Write(CHANNEL(cf.Value("E","channel")), VALUE(rel_pwm));
 }
 
 void naza_interface_manual_c::fly_throttle(ConfigFile &cf, PCA9685 &pca9685, int speed){
-        int rel_pwm=calc_pwm_gradient_throttle(speed, cf.Value("T","left"), cf.Value("T","right"));
+        int rel_pwm=calc_pwm_gradient_throttle(cf.Value("T","stick_motion"), speed, cf.Value("T","left"), cf.Value("T","right"));
         cout << "Setting throttle with Relative PWM signal: " << rel_pwm << " which is " << speed << " \n";
         pca9685.Write(CHANNEL(cf.Value("T","channel")), VALUE(rel_pwm));
 }
 
 void naza_interface_manual_c::fly_left(ConfigFile &cf, PCA9685 &pca9685, int speed){
-        int rel_pwm=calc_pwm_gradient_left(speed, cf.Value("A","left"), cf.Value("A","middle"), cf.Value("A","right"));
+        int rel_pwm=calc_pwm_gradient_left(cf.Value("A","stick_motion"), speed, cf.Value("A","left"), cf.Value("A","middle"), cf.Value("A","right"));
         cout << "Flying Left with Relative PWM signal: " << rel_pwm << " which is " << speed << " \n";
         pca9685.Write(CHANNEL(cf.Value("A","channel")), VALUE(rel_pwm));
 }
 
 void naza_interface_manual_c::fly_right(ConfigFile &cf, PCA9685 &pca9685, int speed){
-        int rel_pwm=calc_pwm_gradient_right(speed, cf.Value("A","left"), cf.Value("A","middle"), cf.Value("A","right"));
+        int rel_pwm=calc_pwm_gradient_right(cf.Value("A","stick_motion"), speed, cf.Value("A","left"), cf.Value("A","middle"), cf.Value("A","right"));
         cout << "Flying Right with Relative PWM signal: " << rel_pwm << " which is " << speed << " \n";
         pca9685.Write(CHANNEL(cf.Value("A","channel")), VALUE(rel_pwm));
 }
 
 void naza_interface_manual_c::fly_turn_right(ConfigFile &cf, PCA9685 &pca9685, int speed){
-        int rel_pwm=calc_pwm_gradient_right(speed, cf.Value("R","left"), cf.Value("R","middle"), cf.Value("R","right"));
+        int rel_pwm=calc_pwm_gradient_right(cf.Value("R","stick_motion"), speed, cf.Value("R","left"), cf.Value("R","middle"), cf.Value("R","right"));
         cout << "Turning Right with Relative PWM signal: " << rel_pwm << " which is " << speed << " \n";
         pca9685.Write(CHANNEL(cf.Value("R","channel")), VALUE(rel_pwm));
 }
 
 void naza_interface_manual_c::fly_turn_left(ConfigFile &cf, PCA9685 &pca9685, int speed){
-        int rel_pwm=calc_pwm_gradient_left(speed, cf.Value("R","left"), cf.Value("R","middle"), cf.Value("R","right"));
+        int rel_pwm=calc_pwm_gradient_left(cf.Value("R","stick_motion"), speed, cf.Value("R","left"), cf.Value("R","middle"), cf.Value("R","right"));
         cout << "Turning Left with Relative PWM signal: " << rel_pwm << " which is " << speed << " \n";
         pca9685.Write(CHANNEL(cf.Value("R","channel")), VALUE(rel_pwm));
 }
 
 void naza_interface_manual_c::arm_motors(ConfigFile &cf, PCA9685 &pca9685){
-        cout << "-------- ARMING MOTORS --------" << "\n";
-        fly_left(cf, pca9685, 100);
+	cout << "-------- ARMING MOTORS --------" << "\n";
+  fly_left(cf, pca9685, 100);
 	fly_back(cf, pca9685, 100);
 	fly_throttle(cf, pca9685, 0);
 	fly_turn_left(cf, pca9685, 100);
@@ -88,16 +88,16 @@ void naza_interface_manual_c::arm_motors(ConfigFile &cf, PCA9685 &pca9685){
 
 
 void naza_interface_manual_c::set_flight_mode(ConfigFile &cf, PCA9685 &pca9685, std::string mode){
-        if(mode=="gps"){
-		pca9685.Write(CHANNEL(cf.Value("U","channel")), VALUE(cf.Value("U", "gps")));
-		cout << "Setting flight mode: " << mode << " \n";
-	} else if(mode=="failsafe"){
-		pca9685.Write(CHANNEL(cf.Value("U","channel")), VALUE(cf.Value("U", "failsafe")));
-		cout << "Setting flight mode: " << mode << " \n";
-	} else if(mode=="selectable"){
-		pca9685.Write(CHANNEL(cf.Value("U","channel")), VALUE(cf.Value("U", "selectable")));
-		cout << "Setting flight mode: " << mode << " \n";
-	}
+    if(mode=="gps"){
+			pca9685.Write(CHANNEL(cf.Value("U","channel")), VALUE(cf.Value("U", "gps")));
+			cout << "Setting flight mode: " << mode << " \n";
+		} else if(mode=="failsafe"){
+			pca9685.Write(CHANNEL(cf.Value("U","channel")), VALUE(cf.Value("U", "failsafe")));
+			cout << "Setting flight mode: " << mode << " \n";
+		} else if(mode=="selectable"){
+			pca9685.Write(CHANNEL(cf.Value("U","channel")), VALUE(cf.Value("U", "selectable")));
+			cout << "Setting flight mode: " << mode << " \n";
+		}
 }
 
 
@@ -141,34 +141,54 @@ void naza_interface_manual_c::recalibrate(ConfigFile &cf, PCA9685 &pca9685){
 		cout << "Recalibration of channel R (2/2)" << " \n";
 		pca9685.Write(CHANNEL(cf.Value("R","channel")), VALUE(cf.Value("R","right")));
 
-   		sleep(1);
-                cout << "Recalibration of channel U (1/2)" << " \n";
-                pca9685.Write(CHANNEL(cf.Value("U","channel")), VALUE(cf.Value("U","gps")));
-                sleep(1);
-                cout << "Recalibration of channel U (2/2)" << " \n";
-                pca9685.Write(CHANNEL(cf.Value("U","channel")), VALUE(cf.Value("U","selectable")));
+ 		sleep(1);
+    cout << "Recalibration of channel U (1/2)" << " \n";
+    pca9685.Write(CHANNEL(cf.Value("U","channel")), VALUE(cf.Value("U","gps")));
+    sleep(1);
+    cout << "Recalibration of channel U (2/2)" << " \n";
+    pca9685.Write(CHANNEL(cf.Value("U","channel")), VALUE(cf.Value("U","selectable")));
 
 }
 
-int naza_interface_manual_c::calc_pwm_gradient_right(int speed_in_perc,int left, int middle, int right){
-        float gradient = 0;
-	if(middle>right){
-		gradient=middle-right;
-        	gradient=gradient/100;
-        	gradient=gradient*speed_in_perc;
-        	gradient=middle-gradient;
-	} else if(right>middle){
-		gradient=right-middle;
-		gradient=gradient/100;
-		gradient=gradient*speed_in_perc;
-		gradient=middle-gradient;
+int naza_interface_manual_c::calc_pwm_gradient_right(string stick_motion, int speed_in_perc,int left, int middle, int right){
+
+  float gradient = 0;
+	if(stick_motion=="rev"){
+
+		if(middle>right){
+			gradient=middle-right;
+	        	gradient=gradient/100;
+	        	gradient=gradient*speed_in_perc;
+	        	gradient=middle-gradient;
+		} else if(right>middle){
+			gradient=right-middle;
+			gradient=gradient/100;
+			gradient=gradient*speed_in_perc;
+			gradient=middle-gradient;
+		}
+
+	} else if(stick_motion=="norm"){
+
+		if(middle<right){
+			gradient=middle-right;
+	        	gradient=gradient/100;
+	        	gradient=gradient*speed_in_perc;
+	        	gradient=middle-gradient;
+		} else if(right<middle){
+			gradient=right-middle;
+			gradient=gradient/100;
+			gradient=gradient*speed_in_perc;
+			gradient=middle-gradient;
+		}
+
 	}
 	return gradient;
 }
 
 
-int naza_interface_manual_c::calc_pwm_gradient_left(int speed_in_perc,int left, int middle, int right){
+int naza_interface_manual_c::calc_pwm_gradient_left(string stick_motion, int speed_in_perc,int left, int middle, int right){
         float gradient = 0;
+				if(stick_motion=="rev"){
         if(middle>left){
                 gradient=middle-left;
                 gradient=gradient/100;
@@ -180,21 +200,51 @@ int naza_interface_manual_c::calc_pwm_gradient_left(int speed_in_perc,int left, 
                 gradient=gradient*speed_in_perc;
                 gradient=gradient+middle;
         }
+
+			} else if(stick_motion=="norm"){
+
+        if(middle<left){
+                gradient=middle-left;
+                gradient=gradient/100;
+                gradient=gradient*speed_in_perc;
+                gradient=gradient+middle;
+        } else if(left<middle){
+                gradient=left-middle;
+                gradient=gradient/100;
+                gradient=gradient*speed_in_perc;
+                gradient=gradient+middle;
+        }
+
+			}
         return gradient;
 }
 
-int naza_interface_manual_c::calc_pwm_gradient_throttle(int speed_in_perc,int left, int right){
+int naza_interface_manual_c::calc_pwm_gradient_throttle(string stick_motion, int speed_in_perc,int left, int right){
         float gradient = 0;
-        if(right>left){
-                gradient=right-left;
-		gradient=gradient/100;
-                gradient=gradient*speed_in_perc;
-		gradient=left-gradient;
-        } else if(right<left){
-                gradient=left-right;
-                gradient=gradient/100;
-                gradient=gradient*speed_in_perc;
-                gradient=left-gradient;
-        }
+				if(stick_motion=="rev"){
+	        if(right>left){
+	          gradient=right-left;
+						gradient=gradient/100;
+	          gradient=gradient*speed_in_perc;
+						gradient=left-gradient;
+	        } else if(right<left){
+	          gradient=left-right;
+	          gradient=gradient/100;
+	          gradient=gradient*speed_in_perc;
+	          gradient=left-gradient;
+	        }
+				} else if(stick_motion=="norm"){
+					if(right<left){
+						gradient=left-right;
+						gradient=gradient/100;
+						gradient=gradient*speed_in_perc;
+						gradient=right+gradient;
+					} else if(right>left){
+						gradient=right-left;
+						gradient=gradient/100;
+						gradient=gradient*speed_in_perc;
+						gradient=right-gradient;
+					}
+				}
         return gradient;
 }
