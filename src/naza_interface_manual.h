@@ -11,9 +11,10 @@ using namespace std;
 class naza_interface_manual_c{
 	public:
 
-		naza_interface_manual_c(ConfigFile &cf, PCA9685 &pca9685);
+		naza_interface_manual_c();
 		~naza_interface_manual_c();
 
+		void init_naza(ConfigFile &cf, PCA9685 &pca9685);
 		void fly_forward(ConfigFile &cf, PCA9685 &pca9685, int speed);
 		void fly_back(ConfigFile &cf, PCA9685 &pca9685, int speed);
 		void fly_throttle(ConfigFile &cf, PCA9685 &pca9685, int speed);

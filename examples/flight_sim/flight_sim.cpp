@@ -12,9 +12,8 @@ int main(){
 	pca9685.SetFrequency(50);
 	ConfigFile cf("/etc/naza/pwm_config.txt");
 
-	naza_interface_manual_c naza(cf, pca9685);
-
-  pca9685.SetFrequency(50);
+	naza_interface_manual_c naza;
+	naza.init_naza(cf, pca9685);
 
   while(1){
   std::cout << "Enter func(forward,back,throttle,left,right,tright,tleft,flm,neutral,(arm << danger)): ";

@@ -11,7 +11,10 @@
 
 using namespace std;
 
-naza_interface_manual_c::naza_interface_manual_c(ConfigFile &cf, PCA9685 &pca9685){
+naza_interface_manual_c::naza_interface_manual_c(){}
+naza_interface_manual_c::~naza_interface_manual_c(){}
+
+void naza_interface_manual_c::init_naza(ConfigFile &cf, PCA9685 &pca9685){
 	cout << "Initializing Naza Interface Controller \n";
 
 	cout << "-" << "\n";
@@ -28,9 +31,6 @@ naza_interface_manual_c::naza_interface_manual_c(ConfigFile &cf, PCA9685 &pca968
 	cout << "   Check channels for command calibration before giving power to motors!" << "\n";
 }
 
-
-naza_interface_manual_c::~naza_interface_manual_c(){
-}
 
 void naza_interface_manual_c::fly_forward(ConfigFile &cf, PCA9685 &pca9685, int speed){
         int rel_pwm=calc_pwm_gradient_right(cf.Value("E","stick_motion"), speed, cf.Value("E","left"), cf.Value("E","middle"), cf.Value("E","right"));
