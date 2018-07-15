@@ -21,8 +21,52 @@ Install config and Headers to include dir
 ### Configuration & Calibration (required)
 
 To make the library work you need to configure the library's config file (`/etc/naza/pwm_config.txt`) <br>
-Each variable (left,middle,right) defines the transmitter sticks location. To find them you need to open your Naza Assistant
-and go to `Rc` section where you have to recalibrate the Naza for your transmitter. Next, start `examples/mod_pwm/` and find the fitting values for maximum left, right and "middle" middle value for each channel and add them to `pwm_config`.
+Each variable (left,middle,right) defines the transmitters throttle endpoint stick location. To find them you need to open your Naza Assistant and go to `Rc` section where you have to recalibrate the Naza for your transmitter. Next, start `examples/mod_pwm/` and find the fitting values for the throttle endpoints of left, right and "middle" value for each channel and add them to `pwm_config`.
+
+### Library functions
+	
+#### Manual:
+
+- fly_throttle: <br>
+Sets the drone throttle for all motors. <br>
+*Corresponds to channel T*
+
+- fly_forward: <br>
+Lets the drone fly forward <br>
+*Corresponds to channel E*
+
+- fly_back: <br>
+Lets the drone fly backwards <br>
+*Corresponds to channel E*
+
+- fly_left: <br>
+Lets the drone fly sideways left <br>
+*Corresponds to channel A*
+
+- fly_right: <br>
+Lets the drone fly sideways right <br>
+*Corresponds to channel A*
+
+- fly_turn_right: <br>
+Lets the drone turn right <br>
+*Corresponds to channel R*
+
+- fly_turn_left: <br>
+Lets the drone turn left <br>
+*Corresponds to channel R*
+	
+- set_neutral: <br>
+Sets all stick positions to neutral.
+
+- recalibrate: <br>
+Moves all sticks to throttle endpoints
+
+- set_flight_mode: <br>
+Sets the flight mode. You can select between: `gps, failsafe, selectable`
+*Corresponds to channel U*
+
+- arm_motors: <br>
+**Arms the motors**
 
 ### Usage
 
@@ -31,7 +75,21 @@ in your own project and link libnaza by using `-lnaza` flag.
 
 ### Examples/Tools
 
-After the installtion of the library you can easily build the examples/tools by using `make`.  
+> Usage:
+> 
+> Build: `./rebuild` <br> Start: `./<tool>`
+
+#### -  flight_sim
+Command Line tool to test and debug the functionallity of basic functions of the project.
+
+CMD commands:
+*forward,back,throttle,left,right,tright,tleft,flm,neutral,arm*
+
+#### -  mod_pwm
+Command Line tool to manually set relative PWM pulse lengths for certain channels
+
+#### -  recalibrate
+Tool to calibrate the Naza V2. Start the calibration process in the Naza V2 Assistant Software, then start the recalibration tool and wait until it's done setting the endpoints for all channels.
 
 ### Wiring
 
@@ -54,7 +112,7 @@ Pwm Reference
 -------------------
 
 The Naza V2 can adapt to different controll interfaces. PWM, PPM and S-Bus are possible.
-Here I will focus on PWM since that is the one I chose to use to communicate. It's one of the simplest 
+Here I will focus on PWM since that is the one I chose to use to communicate. It's one of the easiest
 ways to communicate with the Naza.
 
 PWM input signal: <br> 
