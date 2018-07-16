@@ -91,6 +91,9 @@ Command Line tool to manually set relative PWM pulse lengths for certain channel
 #### -  recalibrate
 Tool to calibrate the Naza V2. Start the calibration process in the Naza V2 Assistant Software, then start the recalibration tool and wait until it's done setting the endpoints for all channels.
 
+#### -  core controll
+The ccontrol "core control" acts as an interface between the web interface and the c++ core of the naza interface. You can easily access flight functions by executing: `./ccontrol.exe forward 80`
+
 ### Wiring
 
 Connect the PCA9685 over I2C with your raspberry pi and the Naza V2 input channels with the different output channels of the PCA9685.
