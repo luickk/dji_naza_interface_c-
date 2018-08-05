@@ -8,7 +8,7 @@ Setup
 ### Installation
 
 > - `git clone https://github.com/MrGrimod/dji_naza_interface_c-.git` <br>
-Clone the project 
+Clone the project
 
 > - `cd dji_naza_interface_c-`<br>
 
@@ -24,7 +24,7 @@ To make the library work you need to configure the library's config file (`/etc/
 Each variable (left,middle,right) defines the transmitters throttle endpoint stick location. To find them you need to open your Naza Assistant and go to `Rc` section where you have to recalibrate the Naza for your transmitter. Next, start `examples/mod_pwm/` and find the fitting values for the throttle endpoints of left, right and "middle" value for each channel and add them to `pwm_config`.
 
 ### Library functions
-	
+
 #### Manual:
 
 - fly_throttle: <br>
@@ -54,7 +54,7 @@ Lets the drone turn right <br>
 - fly_turn_left: <br>
 Lets the drone turn left <br>
 *Corresponds to channel R*
-	
+
 - set_neutral: <br>
 Sets all stick positions to neutral.
 
@@ -76,7 +76,7 @@ in your own project and link libnaza by using `-lnaza` flag.
 ### Examples/Tools
 
 > Usage:
-> 
+>
 > Build: `./rebuild` <br> Start: `./<tool>`
 
 #### -  flight_sim
@@ -111,6 +111,66 @@ Dependencies
 
 > - WiringPi
 
+Serial Communication with Naza GPS
+-------------------
+
+### Switching to AMA0 (old serial interface)
+
+The BCM2837 on the Raspberry Pi3 , Pi3B+, PiZeroW has 2 UARTs (as did its predecessors), however to support the Bluetooth functionality the fully featured PL011 UART was moved from the header pins to the Bluetooth chip and the mini UART made available on header pins 8 & 10.
+
+This has a number of consequences for users of the serial interface.
+
+The `/dev/ttyAMA0` previously used to access the UART now connects to Bluetooth.
+The miniUART is now available on `/dev/ttyS0`.
+In the latest operating system software there is a `/dev/serial0` which selects the appropriate device so you can replace `/dev/ttyAMA0` with `/dev/serial0` and use the same software on the Pi3 and earlier models.
+
+Unfortunately there are a number of other consequences:-
+
+The mini UART is a secondary low throughput UART  
+  intended to be used as a console.
+The mini Uart has the following features: <br>
+• 7 or 8 bit operation. <br>
+• 1 start and 1 stop bit. <br>
+• No parities. <br>
+• Break generation. <br>
+• 8 symbols deep FIFOs for receive and transmit. <br>
+• SW controlled RTS, SW readable CTS. <br>
+• Auto flow control with programmable FIFO level. <br>
+• 16550 like registers. <br>
+• Baudrate derived from system clock. <br>
+There is no support for parity and the throughput is limited, but the latter should not affect most uses.
+
+There is one killer feature "Baudrate derived from system clock" which makes the miniUART useless as the this clock can change dynamically e.g. if the system goes into reduced power or in low power mode.<br>
+
+For the GPS Data input stream we need a reliable and fast serial communication interface, so we need to disable miniUART and switch back to the old ttyAMA0 interface.
+To do so follow these steps:
+
+1. To disable bluethooth and set `/dev/ttyAM0` to real UART (as before)
+Edit the file `/boot/config.txt` and add the following line at the end : <br>
+
+    dtoverlay=pi3-disable-bt
+    1
+    dtoverlay=pi3-disable-bt
+
+2. Stop the bluetooth service with sudo systemctl disable hciuart and reboot. <br>
+
+3. To switch bluetooth to software UART and set /dev/ttyAM0 to real UART (as before)
+Keep in mind that this one will remain possible software problem on bluetooth (software UART), but not on Serial (Hardware) <br>
+Edit the file /boot/config.txt and add the following line at the end : <br>
+
+    dtoverlay=pi3-miniuart-bt
+    core_freq=250
+    1
+    2
+    dtoverlay=pi3-miniuart-bt
+    core_freq=250
+
+4. Edit the file `/lib/systemd/system/hciuart.service` and replace  `/dev/ttyAMA0`  with  `/dev/ttyS0` <br>
+
+5. If you have a system with udev rules that create `/dev/serial0`  and `/dev/serial1` (look if you have these one), and if so use `/dev/serial1` .
+
+Then reboot
+
 Pwm Reference
 -------------------
 
@@ -118,16 +178,16 @@ The Naza V2 can adapt to different controll interfaces. PWM, PPM and S-Bus are p
 Here I will focus on PWM since that is the one I chose to use to communicate. It's one of the easiest
 ways to communicate with the Naza.
 
-PWM input signal: <br> 
+PWM input signal: <br>
 Hz: 50 <br>
 Pulse: 0.5-2.5 ms <br>
 
 To generate a proper signal you need to calculate the relative pulse length. For that you need two other values which represent the overall pulse period and the pulse length. The difference of both mustn't be greater than the period itself. The period is decomposed in 4096 values which is equivalent to a 12 Bit accuracy (2^12). So the difference of both of those values mustn't be greater than 4096. This relative pulse length can be calculated by multiplying the Hz rate, the period length and the pulse length together.
 
     50Hz:
-        
-        50Hz* 0.0005s * 4096 = 102 (relative pulse length) 
-    
-        50Hz* 0.0025s * 4096 = 512 (relative pulse length) 
-    
+
+        50Hz* 0.0005s * 4096 = 102 (relative pulse length)
+
+        50Hz* 0.0025s * 4096 = 512 (relative pulse length)
+
 To summarize, to control the Naza V2 we need a relative pulse length that reaches from 102-512 (depends on calibration).
