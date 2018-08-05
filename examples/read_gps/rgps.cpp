@@ -9,9 +9,13 @@
 #include <errno.h>
 #include <string.h>
 
-int main(){
+void requestSingle(){
+		NazaDecoder.initDir();
 
-	//uint8_t decodedMessage = NazaDecoder.decode();
+		std::cout << "GPS Sats: " << round(NazaDecoder.getDirNumSat()) << ", Lat: " << NazaDecoder.getDirLat() << ", Long: " << NazaDecoder.getDirLon() << ", Heading: " << round(NazaDecoder.getDirHeadingNc()) << " \n";
+}
+
+void requestStream(){
 	int fd ;
 	int count ;
 	unsigned int nextTime ;
@@ -19,13 +23,11 @@ int main(){
 	if ((fd = serialOpen ("/dev/ttyAMA0", 115200)) < 0)
 	{
 	 fprintf (stderr, "Unable to open serial device: %s\n", strerror (errno)) ;
-	 return 1 ;
 	}
 
 	if (wiringPiSetup () == -1)
 	  {
 	    fprintf (stdout, "Unable to start wiringPi: %s\n", strerror (errno)) ;
-	    return 1 ;
 	  }
 
 	  nextTime = millis () + 300 ;
@@ -47,5 +49,11 @@ int main(){
 	  }
 
 	  printf ("\n") ;
-	  return 0 ;
+}
+
+int main(){
+	//requestStream();
+	requestSingle();
+
+	return 0;
 }

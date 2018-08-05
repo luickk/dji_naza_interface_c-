@@ -14,7 +14,11 @@
 #include <math.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "rs232.h"
+
+#include <wiringSerial.h>
+#include <wiringPi.h>
+#include <errno.h>
+#include <string.h>
 
 NazaDecoderLib NazaDecoder;
 
@@ -136,4 +140,144 @@ uint8_t NazaDecoderLib::decode(int input)
   {
     return NAZA_MESSAGE_NONE;
   }
+}
+
+int NazaDecoderLib::initDir(){
+
+	int fd;
+	int count;
+	unsigned int nextTime;
+
+  if ((fd = serialOpen ("/dev/ttyAMA0", 115200)) < 0)
+	{
+	 fprintf (stderr, "Unable to open serial device: %s\n", strerror (errno)) ;
+	 return 1;
+	}
+
+	if (wiringPiSetup () == -1)
+	  {
+	    fprintf (stdout, "Unable to start wiringPi: %s\n", strerror (errno)) ;
+	    return 1;
+	  }
+    return 0;
+}
+
+double NazaDecoderLib::getDirLat(){
+
+	int fd;
+	int count;
+	unsigned int nextTime;
+
+	fd = serialOpen ("/dev/ttyAMA0", 115200);
+
+
+  nextTime = millis () + 300 ;
+
+  if (millis () > nextTime)
+  {
+		nextTime += 300 ;
+  }
+  delay (3);
+
+  while (serialDataAvail (fd))
+  {
+			uint8_t decodedMessage = NazaDecoder.decode(serialGetchar (fd));
+	}
+  return NazaDecoder.getLat();
+}
+
+double NazaDecoderLib::getDirLon(){
+
+	int fd;
+	int count;
+	unsigned int nextTime;
+
+	fd = serialOpen ("/dev/ttyAMA0", 115200);
+
+
+  nextTime = millis () + 300 ;
+
+  if (millis () > nextTime)
+  {
+		nextTime += 300 ;
+  }
+  delay (3);
+
+  while (serialDataAvail (fd))
+  {
+			uint8_t decodedMessage = NazaDecoder.decode(serialGetchar (fd));
+	}
+  return NazaDecoder.getLon();
+}
+
+double NazaDecoderLib::getDirHeadingNc(){
+
+	int fd;
+	int count;
+	unsigned int nextTime;
+
+	fd = serialOpen ("/dev/ttyAMA0", 115200);
+
+
+  nextTime = millis () + 300 ;
+
+  if (millis () > nextTime)
+  {
+		nextTime += 300 ;
+  }
+  delay (3);
+
+  while (serialDataAvail (fd))
+  {
+			uint8_t decodedMessage = NazaDecoder.decode(serialGetchar (fd));
+	}
+  return NazaDecoder.getHeadingNc();
+}
+
+double NazaDecoderLib::getDirNumSat(){
+
+	int fd;
+	int count;
+	unsigned int nextTime;
+
+	fd = serialOpen ("/dev/ttyAMA0", 115200);
+
+
+  nextTime = millis () + 300 ;
+
+  if (millis () > nextTime)
+  {
+		nextTime += 300 ;
+  }
+  delay (3);
+
+  while (serialDataAvail (fd))
+  {
+			uint8_t decodedMessage = NazaDecoder.decode(serialGetchar (fd));
+	}
+  return NazaDecoder.getNumSat();
+}
+
+double NazaDecoderLib::getDirGpsAlt(){
+
+	int fd;
+	int count;
+	unsigned int nextTime;
+
+	fd = serialOpen ("/dev/ttyAMA0", 115200);
+
+
+  nextTime = millis () + 300 ;
+
+  if (millis () > nextTime)
+  {
+		nextTime += 300 ;
+  }
+  delay (3);
+
+  while (serialDataAvail (fd))
+  {
+			uint8_t decodedMessage = NazaDecoder.decode(serialGetchar (fd));
+	}
+  return NazaDecoder.getGpsAlt();
 }

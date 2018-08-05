@@ -77,7 +77,7 @@ in your own project and link libnaza by using `-lnaza` flag.
 
 > Usage:
 >
-> Build: `./rebuild` <br> Start: `./<tool>`
+> Build: `./reinstall` <br> Start: `./<tool>`
 
 #### -  flight_sim
 Command Line tool to test and debug the functionallity of basic functions of the project.

@@ -17,7 +17,11 @@
 #include <math.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "rs232.h"
+
+#include <wiringSerial.h>
+#include <wiringPi.h>
+#include <errno.h>
+#include <string.h>
 
 using namespace std;
 
@@ -31,6 +35,14 @@ class NazaDecoderLib
     typedef enum { NO_FIX = 0, FIX_2D = 2, FIX_3D = 3, FIX_DGPS = 4 } fixType_t;
 
     NazaDecoderLib();
+
+    int initDir();
+
+    double getDirLat();
+    double getDirLon();
+    double getDirNumSat();
+    double getDirHeadingNc();
+    double getDirGpsAlt();
 
     uint8_t decode(int input);
     double getLat();
