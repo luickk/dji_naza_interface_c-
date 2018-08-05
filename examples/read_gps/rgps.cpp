@@ -10,9 +10,7 @@
 #include <string.h>
 
 void requestSingle(){
-		NazaDecoder.initDir();
 
-		std::cout << "GPS Sats: " << round(NazaDecoder.getDirNumSat()) << ", Lat: " << NazaDecoder.getDirLat() << ", Long: " << NazaDecoder.getDirLon() << ", Heading: " << round(NazaDecoder.getDirHeadingNc()) << " \n";
 }
 
 void requestStream(){
@@ -44,7 +42,7 @@ void requestStream(){
 	    while (serialDataAvail (fd))
 	    {
 					uint8_t decodedMessage = NazaDecoder.decode(serialGetchar (fd));
-					std::cout << "GPS Sats: " << round(NazaDecoder.getNumSat()) << ", Lat: " << NazaDecoder.getLat() << ", Long: " << NazaDecoder.getLon() << ", Heading: " << round(NazaDecoder.getHeadingNc()) << " \n";
+					std::cout << "GPS Sats: " << round(NazaDecoder.getNumSat()) << ", Lat: " << NazaDecoder.getLat() << ", Long: " << NazaDecoder.getLon() << ", Heading: " << round(NazaDecoder.getHeadingNc()) << ", Alt: " << NazaDecoder.getGpsAlt() << " \n";
 	    }
 	  }
 
@@ -52,8 +50,8 @@ void requestStream(){
 }
 
 int main(){
-	//requestStream();
-	requestSingle();
+	requestStream();
+	//requestSingle();
 
 	return 0;
 }

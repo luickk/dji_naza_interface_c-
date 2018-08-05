@@ -71,7 +71,7 @@ Sets the flight mode. You can select between: `gps, failsafe, selectable`
 ### Usage
 
 After successful installation you can include the header files `#include "libnaza/naza_interface_manual.h"` <br>
-in your own project and link libnaza by using `-lnaza` flag.
+in your own project and link libnaza by using `-lnaza` and `-lwiringPi` flag.
 
 ### Examples/Tools
 

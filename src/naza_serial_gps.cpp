@@ -20,6 +20,8 @@
 #include <errno.h>
 #include <string.h>
 
+using namespace std;
+
 NazaDecoderLib NazaDecoder;
 
 NazaDecoderLib::NazaDecoderLib()
@@ -81,7 +83,6 @@ uint8_t NazaDecoderLib::decode(int input)
   else if((seq == 5) && (input == cs1)) { seq++; }                                                        // verify checksum #1
   else if((seq == 6) && (input == cs2)) { seq++; }                                                        // verify checksum #2
   else seq = 0;
-
   if(seq == 7) // all data in buffer
   {
     seq = 0;
@@ -142,142 +143,54 @@ uint8_t NazaDecoderLib::decode(int input)
   }
 }
 
-int NazaDecoderLib::initDir(){
-
+/**
+ * Warning, unstable/ trustable method. Don't use for mission critical yet
+ */
+void NazaDecoderLib::getAll(double &lat, double &lon, double &alt, double &speed, double &heading, uint8_t &sats)
+{
 	int fd;
 	int count;
 	unsigned int nextTime;
 
-  if ((fd = serialOpen ("/dev/ttyAMA0", 115200)) < 0)
+	if ((fd = serialOpen ("/dev/ttyAMA0", 115200)) < 0)
 	{
 	 fprintf (stderr, "Unable to open serial device: %s\n", strerror (errno)) ;
-	 return 1;
 	}
 
 	if (wiringPiSetup () == -1)
-	  {
-	    fprintf (stdout, "Unable to start wiringPi: %s\n", strerror (errno)) ;
-	    return 1;
-	  }
-    return 0;
-}
-
-double NazaDecoderLib::getDirLat(){
-
-	int fd;
-	int count;
-	unsigned int nextTime;
-
-	fd = serialOpen ("/dev/ttyAMA0", 115200);
-
-
+  {
+    fprintf (stdout, "Unable to start wiringPi: %s\n", strerror (errno)) ;
+  }
+  bool stop = true;
+  bool gps = false;
+  bool compass = false;
   nextTime = millis () + 300 ;
 
+  while(stop)
+  {
   if (millis () > nextTime)
   {
-		nextTime += 300 ;
+   nextTime += 300 ;
+   ++count ;
   }
-  delay (3);
+  delay (3) ;
 
-  while (serialDataAvail (fd))
-  {
-			uint8_t decodedMessage = NazaDecoder.decode(serialGetchar (fd));
-	}
-  return NazaDecoder.getLat();
-}
-
-double NazaDecoderLib::getDirLon(){
-
-	int fd;
-	int count;
-	unsigned int nextTime;
-
-	fd = serialOpen ("/dev/ttyAMA0", 115200);
-
-
-  nextTime = millis () + 300 ;
-
-  if (millis () > nextTime)
-  {
-		nextTime += 300 ;
+  while (serialDataAvail (fd)){
+      uint8_t decodedMessage = NazaDecoder.decode(serialGetchar(fd));
+      if(decodedMessage == NAZA_MESSAGE_GPS){
+        lat=NazaDecoder.getLat();
+        lon=NazaDecoder.getLon();
+        alt=NazaDecoder.getGpsAlt();
+        speed=NazaDecoder.getSpeed();
+        sats=NazaDecoder.getNumSat();
+        gps=true;
+      } else if(decodedMessage == NAZA_MESSAGE_COMPASS){
+        heading=NazaDecoder.getHeadingNc();
+        compass=true;
+      } else if(gps == true && compass == true){
+        stop=false;
+        break;
+      }
+    }
   }
-  delay (3);
-
-  while (serialDataAvail (fd))
-  {
-			uint8_t decodedMessage = NazaDecoder.decode(serialGetchar (fd));
-	}
-  return NazaDecoder.getLon();
-}
-
-double NazaDecoderLib::getDirHeadingNc(){
-
-	int fd;
-	int count;
-	unsigned int nextTime;
-
-	fd = serialOpen ("/dev/ttyAMA0", 115200);
-
-
-  nextTime = millis () + 300 ;
-
-  if (millis () > nextTime)
-  {
-		nextTime += 300 ;
-  }
-  delay (3);
-
-  while (serialDataAvail (fd))
-  {
-			uint8_t decodedMessage = NazaDecoder.decode(serialGetchar (fd));
-	}
-  return NazaDecoder.getHeadingNc();
-}
-
-double NazaDecoderLib::getDirNumSat(){
-
-	int fd;
-	int count;
-	unsigned int nextTime;
-
-	fd = serialOpen ("/dev/ttyAMA0", 115200);
-
-
-  nextTime = millis () + 300 ;
-
-  if (millis () > nextTime)
-  {
-		nextTime += 300 ;
-  }
-  delay (3);
-
-  while (serialDataAvail (fd))
-  {
-			uint8_t decodedMessage = NazaDecoder.decode(serialGetchar (fd));
-	}
-  return NazaDecoder.getNumSat();
-}
-
-double NazaDecoderLib::getDirGpsAlt(){
-
-	int fd;
-	int count;
-	unsigned int nextTime;
-
-	fd = serialOpen ("/dev/ttyAMA0", 115200);
-
-
-  nextTime = millis () + 300 ;
-
-  if (millis () > nextTime)
-  {
-		nextTime += 300 ;
-  }
-  delay (3);
-
-  while (serialDataAvail (fd))
-  {
-			uint8_t decodedMessage = NazaDecoder.decode(serialGetchar (fd));
-	}
-  return NazaDecoder.getGpsAlt();
 }

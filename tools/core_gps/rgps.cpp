@@ -9,51 +9,11 @@
 #include <errno.h>
 #include <string.h>
 
-void requestSingle(){
-		NazaDecoder.initDir();
-
-		std::cout << "GPS Sats: " << round(NazaDecoder.getDirNumSat()) << ", Lat: " << NazaDecoder.getDirLat() << ", Long: " << NazaDecoder.getDirLon() << ", Heading: " << round(NazaDecoder.getDirHeadingNc()) << " \n";
-}
-
-void requestStream(){
-	int fd ;
-	int count ;
-	unsigned int nextTime ;
-
-	if ((fd = serialOpen ("/dev/ttyAMA0", 115200)) < 0)
-	{
-	 fprintf (stderr, "Unable to open serial device: %s\n", strerror (errno)) ;
-	}
-
-	if (wiringPiSetup () == -1)
-	  {
-	    fprintf (stdout, "Unable to start wiringPi: %s\n", strerror (errno)) ;
-	  }
-
-	  nextTime = millis () + 300 ;
-
-	  while(1)
-	  {
-	    if (millis () > nextTime)
-	    {
-				nextTime += 300 ;
-	      ++count ;
-	    }
-	    delay (3) ;
-
-	    while (serialDataAvail (fd))
-	    {
-					uint8_t decodedMessage = NazaDecoder.decode(serialGetchar (fd));
-					std::cout << "GPS Sats: " << round(NazaDecoder.getNumSat()) << ", Lat: " << NazaDecoder.getLat() << ", Long: " << NazaDecoder.getLon() << ", Heading: " << round(NazaDecoder.getHeadingNc()) << " \n";
-	    }
-	  }
-
-	  printf ("\n") ;
-}
-
 int main(){
-	//requestStream();
-	requestSingle();
+	double lat, lon, alt, speed, heading; uint8_t sats;
+
+	NazaDecoder.getAll(lat,lon,alt,speed,heading,sats);
+	std::cout << round(sats) << "," << lat << "," << lon << "," << heading << "," << alt << "," << speed << " \n";
 
 	return 0;
 }

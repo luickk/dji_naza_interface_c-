@@ -36,22 +36,18 @@ class NazaDecoderLib
 
     NazaDecoderLib();
 
-    int initDir();
-
-    double getDirLat();
-    double getDirLon();
-    double getDirNumSat();
-    double getDirHeadingNc();
-    double getDirGpsAlt();
+    void getAll(double &lat, double &lon, double &alt, double &speed, double &heading, uint8_t &sats);
 
     uint8_t decode(int input);
+    uint8_t decodeSingle(int input, int &seq);
     double getLat();
     double getLon();
     double getGpsAlt();
     double getSpeed();
-    fixType_t getFixType();
-    uint8_t getNumSat();
     double getHeadingNc();
+    uint8_t getNumSat();
+
+    fixType_t getFixType();
     double getCog();
     double getGpsVsi();
     double getHdop();
