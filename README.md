@@ -26,6 +26,15 @@ Install config and Headers to include dir
 To make the library work you need to configure the library's config file (`/etc/naza/pwm_config.txt`) <br>
 Each variable (left,middle,right) defines the transmitters throttle endpoint stick location. To find them you need to open your Naza Assistant and go to `Rc` section where you have to recalibrate the Naza for your transmitter. Next, start `examples/mod_pwm/` and find the fitting values for the throttle endpoints of left, right and "middle" value for each channel and add them to `pwm_config`.
 
+### Usage
+
+After successful installation you can include the header files `#include "libnaza/naza_interface_manual.h"` <br>
+in your own project and link libnaza by using `-lnaza` and `-lwiringPi` flag.
+
+### Wiring
+
+Connect the PCA9685 over I2C with your raspberry pi and the Naza V2 input channels with the different output channels of the PCA9685.
+
 ### Library functions
 
 #### Manual:
@@ -71,35 +80,26 @@ Sets the flight mode. You can select between: `gps, failsafe, selectable`
 - arm_motors: <br>
 **Arms the motors**
 
-### Usage
-
-After successful installation you can include the header files `#include "libnaza/naza_interface_manual.h"` <br>
-in your own project and link libnaza by using `-lnaza` and `-lwiringPi` flag.
-
-### Examples/Tools
+### Examples
 
 > Usage:
 >
 > Build: `./reinstall` <br> Start: `./<tool>`
 
-#### -  flight_sim
+##### -  flight_sim
 Command Line tool to test and debug the functionallity of basic functions of the project.
 
 CMD commands:
 *forward,back,throttle,left,right,tright,tleft,flm,neutral,arm*
 
-#### -  mod_pwm
+##### -  mod_pwm
 Command Line tool to manually set relative PWM pulse lengths for certain channels
 
-#### -  recalibrate
+##### -  recalibrate
 Tool to calibrate the Naza V2. Start the calibration process in the Naza V2 Assistant Software, then start the recalibration tool and wait until it's done setting the endpoints for all channels.
 
-#### -  core controll
-The ccontrol "core control" acts as an interface between the web interface and the c++ core of the naza interface. You can easily access flight functions by executing: `./ccontrol.exe forward 80`
-
-### Wiring
-
-Connect the PCA9685 over I2C with your raspberry pi and the Naza V2 input channels with the different output channels of the PCA9685.
+##### -  read gps
+Tool to decode Serial GPS coming from the Naza GPS module. It inputs the data in a continuous stream of data.  
 
 Dependencies
 -------------------
