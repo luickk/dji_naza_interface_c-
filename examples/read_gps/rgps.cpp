@@ -9,9 +9,6 @@
 #include <errno.h>
 #include <string.h>
 
-void requestSingle(){
-
-}
 
 void requestStream(){
 	int fd ;
