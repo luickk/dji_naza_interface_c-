@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <unistd.h>
 
 #include <cstdio>
 #include <cstdlib>
@@ -13,6 +14,10 @@
 
 #include "mythread.h"
 #include "client.h"
+#include <wiringSerial.h>
+#include <wiringPi.h>
+#include "libnaza/pca9685.h"
+#include "libnaza/naza_serial_gps.h"
 
 #define PORT 30666
 
@@ -32,6 +37,7 @@ class Server {
     Server();
     void AcceptAndDispatch();
     static void * HandleClient(void *args);
+    static void * gpsDataStream(void *args);
 
   private:
     static void ListClients();

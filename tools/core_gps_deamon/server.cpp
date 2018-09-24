@@ -82,10 +82,6 @@ void *Server::HandleClient(void *args) {
   MyThread::UnlockMutex((const char *) c->name);
 
   while(1) {
-
-    Server::SendToAll("message");
-    usleep(10000);
-
     memset(buffer, 0, sizeof buffer);
     n = recv(c->sock, buffer, sizeof buffer, MSG_PEEK | MSG_DONTWAIT);
 
