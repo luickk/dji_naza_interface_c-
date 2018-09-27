@@ -24,7 +24,7 @@ Server::Server() {
   setsockopt(serverSock,SOL_SOCKET,SO_REUSEADDR,&yes,sizeof(int));
 
   if(bind(serverSock, (struct sockaddr *) &serverAddr, sizeof(sockaddr_in)) < 0)
-    cerr << "Failed to bind";
+    cerr << "TCP-raw: Failed to bind";
 
   listen(serverSock, 5);
 }
@@ -52,7 +52,7 @@ void Server::AcceptAndDispatch() {
     c->sock = accept(serverSock, (struct sockaddr *) &clientAddr, &cliSize);
 
 	  if(c->sock < 0) {
-	    cerr << "Error on accept";
+	    cerr << "TCP-raw: Error on accept";
 	  }
 	  else {
 	    t->Create((void *) Server::HandleClient, c);
@@ -76,7 +76,7 @@ void *Server::HandleClient(void *args) {
   c->SetId(Server::clients.size());
   sprintf(buffer, "Client n.%d", c->id);
   c->SetName(buffer);
-  cout << "Adding client with id: " << c->id << endl;
+  cout << "TCP-raw: Adding client with id: " << c->id << endl;
   Server::clients.push_back(*c);
 
   MyThread::UnlockMutex((const char *) c->name);
@@ -87,14 +87,14 @@ void *Server::HandleClient(void *args) {
 
     //Client disconnected?
     if(n == 0) {
-      cout << "Client " << c->name << " diconnected" << endl;
+      cout << "TCP-raw: Client " << c->name << " diconnected" << endl;
       close(c->sock);
 
       //Remove client in Static clients <vector> (Critical section!)
       MyThread::LockMutex((const char *) c->name);
 
         index = Server::FindClientIndex(c);
-        cout << "Erasing user in position " << index << " whose name id is: "
+        cout << "TCP-raw: Erasing user in position " << index << " whose name id is: "
 	  << Server::clients[index].id << endl;
         Server::clients.erase(Server::clients.begin() + index);
 
@@ -135,6 +135,6 @@ int Server::FindClientIndex(Client *c) {
   for(size_t i=0; i<clients.size(); i++) {
     if((Server::clients[i].id) == c->id) return (int) i;
   }
-  cerr << "Client id not found." << endl;
+  cerr << "TCP-raw: Client id not found." << endl;
   return -1;
 }
