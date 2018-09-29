@@ -14,12 +14,6 @@
 
 #include "mythread.h"
 #include "client.h"
-#include <wiringSerial.h>
-#include <wiringPi.h>
-#include "libnaza/pca9685.h"
-#include "libnaza/naza_serial_gps.h"
-
-#define PORT 30666
 
 using namespace std;
 
@@ -34,14 +28,13 @@ class Server {
     char buff[256];
 
   public:
-    Server();
+    Server(int p);
     void AcceptAndDispatch();
+    static void SendToAll(char *message);
     static void * HandleClient(void *args);
-    static void * gpsDataStream(void *args);
 
   private:
     static void ListClients();
-    static void SendToAll(char *message);
     static int FindClientIndex(Client *c);
 };
 

@@ -5,7 +5,7 @@ using namespace std;
 //Actually allocate clients
 vector<Client> Server::clients;
 
-Server::Server() {
+Server::Server(int p) {
 
   //Initialize static mutex from MyThread
   MyThread::InitMutex();
@@ -18,7 +18,7 @@ Server::Server() {
   memset(&serverAddr, 0, sizeof(sockaddr_in));
   serverAddr.sin_family = AF_INET;
   serverAddr.sin_addr.s_addr = INADDR_ANY;
-  serverAddr.sin_port = htons(PORT);
+  serverAddr.sin_port = htons(p);
 
   //Avoid bind error if the socket was not close()'d last time;
   setsockopt(serverSock,SOL_SOCKET,SO_REUSEADDR,&yes,sizeof(int));

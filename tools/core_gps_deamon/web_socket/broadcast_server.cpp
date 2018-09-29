@@ -5,9 +5,6 @@
 #include <iostream>
 #include <set>
 
-/*#include <boost/thread.hpp>
-#include <boost/thread/mutex.hpp>
-#include <boost/thread/condition_variable.hpp>*/
 #include <websocketpp/common/thread.hpp>
 
 typedef websocketpp::server<websocketpp::config::asio> server;
@@ -56,9 +53,9 @@ public:
         m_server.set_message_handler(bind(&broadcast_server::on_message,this,::_1,::_2));
     }
 
-    void run() {
+    void run(int port) {
         // listen on specified port
-        m_server.listen(9002);
+        m_server.listen(port);
 
         // Start the server accept loop
         m_server.start_accept();
@@ -67,7 +64,7 @@ public:
         try {
             m_server.run();
         } catch (const std::exception & e) {
-            std::cout << e.what() << std::endl;
+            //std::cout << e.what() << std::endl;
         }
     }
 
@@ -121,14 +118,19 @@ public:
             } else if (a.type == MESSAGE) {
                 lock_guard<mutex> guard(m_connection_lock);
 
-                con_list::iterator it;
-                for (it = m_connections.begin(); it != m_connections.end(); ++it) {
-                    m_server.send(*it,a.msg);
-                }
+                // con_list::iterator it;
+                // for (it = m_connections.begin(); it != m_connections.end(); ++it) {
+                //     m_server.send(*it,a.msg);
+                // }
             } else {
                 // undefined.
             }
         }
+    }
+    void SendToAll(std::string message) {
+      for (auto it : m_connections) {
+        m_server.send(it, message, websocketpp::frame::opcode::text);
+      }
     }
 private:
     typedef std::set<connection_hdl,std::owner_less<connection_hdl> > con_list;
