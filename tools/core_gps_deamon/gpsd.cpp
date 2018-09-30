@@ -84,11 +84,13 @@ int main(int argc, char* argv[]) {
     {
         decodedMessage = NazaDecoder.decode(serialGetchar (fd));
         gpsData = std::to_string(round(NazaDecoder.getNumSat())) + "," + std::to_string(NazaDecoder.getLat()) + "," + std::to_string(NazaDecoder.getLon()) + "," + std::to_string(round(NazaDecoder.getHeadingNc())) + "," + std::to_string(NazaDecoder.getGpsAlt()) + " \n";
-        //std::cout << "GPS Sats: " << round(NazaDecoder.getNumSat()) << ", Lat: " << NazaDecoder.getLat() << ", Long: " << NazaDecoder.getLon() << ", Heading: " << round(NazaDecoder.getHeadingNc()) << ", Alt: " << NazaDecoder.getGpsAlt() << " \n";
-        strncpy(buffer, gpsData.c_str(), sizeof(buffer));
+      strncpy(buffer, gpsData.c_str(), sizeof(buffer));
         // sending GPS data to all clients
-        Server::SendToAll(buffer);
-        websocket.SendToAll(gpsData);
+        if (clock()%100==0){
+          //std::cout << "GPS Sats: " << round(NazaDecoder.getNumSat()) << ", Lat: " << NazaDecoder.getLat() << ", Long: " << NazaDecoder.getLon() << ", Heading: " << round(NazaDecoder.getHeadingNc()) << ", Alt: " << NazaDecoder.getGpsAlt() << " \n";
+          Server::SendToAll(buffer);
+          websocket.SendToAll(gpsData);
+      }
     }
   }
   /*

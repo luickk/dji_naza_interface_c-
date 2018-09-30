@@ -51,6 +51,9 @@ public:
         m_server.set_open_handler(bind(&broadcast_server::on_open,this,::_1));
         m_server.set_close_handler(bind(&broadcast_server::on_close,this,::_1));
         m_server.set_message_handler(bind(&broadcast_server::on_message,this,::_1,::_2));
+         // Set logging settings
+        m_server.set_error_channels(websocketpp::log::elevel::none);
+        m_server.set_access_channels(websocketpp::log::alevel::none);
     }
 
     void run(int port) {
