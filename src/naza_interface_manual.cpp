@@ -14,6 +14,12 @@ using namespace std;
 naza_interface_manual_c::naza_interface_manual_c(){}
 naza_interface_manual_c::~naza_interface_manual_c(){}
 
+/**
+    init_naza requires the drone NOT to be in the air!
+		ONLY USE ON GROUND!
+
+    init_naza sets all control elements to neutral and prints pwm config values.
+*/
 void naza_interface_manual_c::init_naza(ConfigFile &cf, PCA9685 &pca9685){
 	cout << "Initializing Naza Interface Controller \n";
 
@@ -32,48 +38,89 @@ void naza_interface_manual_c::init_naza(ConfigFile &cf, PCA9685 &pca9685){
 }
 
 
+/**
+    Only use fly_forward in the AIR.
+
+    fly_forward sets channel E to given percentage value
+*/
 void naza_interface_manual_c::fly_forward(ConfigFile &cf, PCA9685 &pca9685, int speed){
-        int rel_pwm=calc_pwm_gradient_right(cf.Value("E","stick_motion"), speed, cf.Value("E","left"), cf.Value("E","middle"), cf.Value("E","right"));
+  int rel_pwm=calc_pwm_gradient_right(cf.Value("E","stick_motion"), speed, cf.Value("E","left"), cf.Value("E","middle"), cf.Value("E","right"));
 	cout << "Flying Forward with Relative PWM signal: " << rel_pwm << " which is " << speed << " \n";
 	pca9685.Write(CHANNEL(cf.Value("E","channel")), VALUE(rel_pwm));
 }
 
+/**
+    Only use fly_back in the AIR.
+
+    fly_back sets channel E to given percentage value
+*/
 void naza_interface_manual_c::fly_back(ConfigFile &cf, PCA9685 &pca9685, int speed){
         int rel_pwm=calc_pwm_gradient_left(cf.Value("E","stick_motion"), speed, cf.Value("E","left"), cf.Value("E","middle"), cf.Value("E","right"));
         cout << "Flying Back with Relative PWM signal: " << rel_pwm << " which is " << speed << " \n";
         pca9685.Write(CHANNEL(cf.Value("E","channel")), VALUE(rel_pwm));
 }
 
+/**
+    Only use fly_throttle in the air OR on take off.
+
+    fly_throttle sets channel T to given percentage value
+*/
 void naza_interface_manual_c::fly_throttle(ConfigFile &cf, PCA9685 &pca9685, int speed){
         int rel_pwm=calc_pwm_gradient_throttle(cf.Value("T","stick_motion"), speed, cf.Value("T","left"), cf.Value("T","right"));
         cout << "Setting throttle with Relative PWM signal: " << rel_pwm << " which is " << speed << " \n";
         pca9685.Write(CHANNEL(cf.Value("T","channel")), VALUE(rel_pwm));
 }
 
+/**
+    Only use fly_left in the AIR.
+
+    fly_left sets channel A to given percentage value
+*/
 void naza_interface_manual_c::fly_left(ConfigFile &cf, PCA9685 &pca9685, int speed){
         int rel_pwm=calc_pwm_gradient_left(cf.Value("A","stick_motion"), speed, cf.Value("A","left"), cf.Value("A","middle"), cf.Value("A","right"));
         cout << "Flying Left with Relative PWM signal: " << rel_pwm << " which is " << speed << " \n";
         pca9685.Write(CHANNEL(cf.Value("A","channel")), VALUE(rel_pwm));
 }
 
+/**
+    Only use fly_right in the AIR.
+
+    fly_right sets channel A to given percentage value
+*/
 void naza_interface_manual_c::fly_right(ConfigFile &cf, PCA9685 &pca9685, int speed){
         int rel_pwm=calc_pwm_gradient_right(cf.Value("A","stick_motion"), speed, cf.Value("A","left"), cf.Value("A","middle"), cf.Value("A","right"));
         cout << "Flying Right with Relative PWM signal: " << rel_pwm << " which is " << speed << " \n";
         pca9685.Write(CHANNEL(cf.Value("A","channel")), VALUE(rel_pwm));
 }
 
+/**
+    Only use fly_turn_right in the AIR.
+
+    fly_turn_right sets channel R to given percentage value
+*/
 void naza_interface_manual_c::fly_turn_right(ConfigFile &cf, PCA9685 &pca9685, int speed){
         int rel_pwm=calc_pwm_gradient_right(cf.Value("R","stick_motion"), speed, cf.Value("R","left"), cf.Value("R","middle"), cf.Value("R","right"));
         cout << "Turning Right with Relative PWM signal: " << rel_pwm << " which is " << speed << " \n";
         pca9685.Write(CHANNEL(cf.Value("R","channel")), VALUE(rel_pwm));
 }
 
+/**
+    Only use fly_turn_left in the AIR.
+
+    fly_turn_left sets channel R to given percentage value
+*/
 void naza_interface_manual_c::fly_turn_left(ConfigFile &cf, PCA9685 &pca9685, int speed){
         int rel_pwm=calc_pwm_gradient_left(cf.Value("R","stick_motion"), speed, cf.Value("R","left"), cf.Value("R","middle"), cf.Value("R","right"));
         cout << "Turning Left with Relative PWM signal: " << rel_pwm << " which is " << speed << " \n";
         pca9685.Write(CHANNEL(cf.Value("R","channel")), VALUE(rel_pwm));
 }
 
+/**
+    arm_motors requires the drone NOT to be in the air!
+		ONLY USE ON GROUND!
+
+    arm_motors arms the motors and then returns all channels to neutral
+*/
 void naza_interface_manual_c::arm_motors(ConfigFile &cf, PCA9685 &pca9685){
 	cout << "-------- ARMING MOTORS --------" << "\n";
   fly_left(cf, pca9685, 100);
@@ -86,7 +133,9 @@ void naza_interface_manual_c::arm_motors(ConfigFile &cf, PCA9685 &pca9685){
 	set_neutral(cf, pca9685);
 }
 
-
+/**
+    Use set_flight_mode to switches between different flight modes.
+*/
 void naza_interface_manual_c::set_flight_mode(ConfigFile &cf, PCA9685 &pca9685, std::string mode){
     if(mode=="gps"){
 			pca9685.Write(CHANNEL(cf.Value("U","channel")), VALUE(cf.Value("U", "gps")));
@@ -100,7 +149,12 @@ void naza_interface_manual_c::set_flight_mode(ConfigFile &cf, PCA9685 &pca9685, 
 		}
 }
 
+/**
+    set_neutral requires the drone NOT to be in the air!
+		ONLY USE ON GROUND!
 
+    set_neutral sets all channels to neutral including THROTTLE TO 0%
+*/
 void naza_interface_manual_c::set_neutral(ConfigFile &cf, PCA9685 &pca9685){
 		fly_back(cf, pca9685, 0);
 		fly_throttle(cf, pca9685, 0);
@@ -108,6 +162,12 @@ void naza_interface_manual_c::set_neutral(ConfigFile &cf, PCA9685 &pca9685){
 		fly_turn_right(cf, pca9685, 0);
 }
 
+/**
+    recalibrate requires the drone NOT to be in the air!
+		ONLY USE ON GROUND!
+
+		recalibrate recalibrate all channels to corresponding config values.
+*/
 void naza_interface_manual_c::recalibrate(ConfigFile &cf, PCA9685 &pca9685){
 
 		cout << "Resetting all channels!" << " \n";
