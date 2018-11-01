@@ -13,10 +13,12 @@ Setup
 > - `git clone https://github.com/MrGrimod/dji_naza_interface_c-.git` <br>
 Clone the project
 
+
 > - `cd dji_naza_interface_c-`<br>
 
 > - `make`<br>
 Build the library's share object file.
+
 
 > - `make install`<br>
 Install config and Headers to include dir  
