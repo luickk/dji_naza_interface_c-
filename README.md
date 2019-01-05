@@ -13,10 +13,12 @@ Setup
 > - `git clone https://github.com/MrGrimod/dji_naza_interface_c-.git` <br>
 Clone the project
 
+
 > - `cd dji_naza_interface_c-`<br>
 
 > - `make`<br>
 Build the library's share object file.
+
 
 > - `make install`<br>
 Install config and Headers to include dir  
@@ -80,25 +82,43 @@ Sets the flight mode. You can select between: `gps, failsafe, selectable`
 - arm_motors: <br>
 **Arms the motors**
 
+#### Autonomous:
+
+- auto_liftoff <br>
+Lets the drone take off.
+
+- auto_landing <br>
+Lets the drone land.
+
+- fly_to_gps_pos <br>
+Lets the drone fly to a certain position.
+
+- turn_to_deg <br>
+Lets the drone fly turn to a certain position.
+
+- auto_hover <br>
+Lets the drone hover.
+
+
 ### Examples
 
 > Usage:
 >
 > Build: `./reinstall` <br> Start: `./<tool>`
 
-##### -  flight_sim
-Command Line tool to test and debug the functionallity of basic functions of the project.
+-  flight_sim <br>
+Command Line tool to test and debug the functionallity of basic functions of the project. <br>
 
-CMD commands:
-*forward,back,throttle,left,right,tright,tleft,flm,neutral,arm*
+CMD commands:<br>
+*forward,back,throttle,left,right,tright,tleft,flm,neutral,arm*<br>
 
-##### -  mod_pwm
-Command Line tool to manually set relative PWM pulse lengths for certain channels
+-  mod_pwm<br>
+Command Line tool to manually set relative PWM pulse lengths for certain channels<br>
 
-##### -  recalibrate
-Tool to calibrate the Naza V2. Start the calibration process in the Naza V2 Assistant Software, then start the recalibration tool and wait until it's done setting the endpoints for all channels.
+-  recalibrate<br>
+Tool to calibrate the Naza V2. Start the calibration process in the Naza V2 Assistant Software, then start the recalibration tool and wait until it's done setting the endpoints for all channels.<br>
 
-##### -  read gps
+-  read gps<br>
 Tool to decode Serial GPS coming from the Naza GPS module. It inputs the data in a continuous stream of data.  
 
 Dependencies
