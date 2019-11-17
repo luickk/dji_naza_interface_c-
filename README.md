@@ -1,22 +1,19 @@
 # DJI Naza V2 C++ PWM Interface
 
-A C++ interface for Raspberry to interact with DJI Naza V2 Flight controller. To generate the PWM signal it uses the [PWM/Servo Driver - I2C interface - PCA9685](https://www.adafruit.com/product/815). The lib consists of two different section, **Manual** and **autonomous**. **Manual** offers standard function to control the drone, which are immediately executed. **Autonomous** provides functions which require a serial connection to the Naza V2 to fly for example to differnt waypointsn(is highly experimental and partly unfinished, continued [here](https://github.com/cy8berpunk/ros_airdrop)).
+A C++ interface for Raspberry to interact with DJI Naza V2 Flight controller. The project is a diy solution for people who don't have access to dji's libraries but still need the accuracy/ advantages of the Naza V2. It allows the user to control the Naza V2 via. a Raspberry by installing this library and write their own program using the methods supplied by the library. The library does that by emulating the PWM signals which actually/ normally come from a receiver to control the Naza V2(drone). To generate the PWM signal it uses the [PWM/Servo Driver - I2C interface - PCA9685](https://www.adafruit.com/product/815). The lib consists of two different section, **manual** and **autonomous**. **Manual** offers standard functions to control the drone, which are immediately executed. **Autonomous** provides functions which require a serial connection(to decode gps, gyro/ acc information) to the Naza V2 to fly for example to differnt waypoints(is highly experimental and partly unfinished, continued [here](https://github.com/cy8berpunk/ros_airdrop)).
 
 ## Webinterface 
-[The Webinterface](https://github.com/MrGrimod/dji_naza_web_interface) is built on top of this project and uses the tools/ binaries to access the Naza. It's based on PHP and Js Ajax, the PHP scripts directly access the binaries compiled by this project.
+[The Webinterface](https://github.com/MrGrimod/dji_naza_web_interface) is built on top of this project and uses the tools/ binaries from this project to access the Naza. It's based on PHP and Js Ajax, the PHP scripts directly access the binaries compiled by this project and can be used to test the lib.
 
-Pwm Reference
--------------------
+## Pwm Reference
 
-The Naza V2 can adapt to different controll interfaces. PWM, PPM and S-Bus are possible.
-Here I will focus on PWM since that is the one I chose to use to communicate. It's one of the easiest
-ways to communicate with the Naza.
+The Naza V2 can adapt to different controll interfaces PWM, PPM and S-Bus are possible. Here I will focus on PWM, since that is the one I chose to use. It is the simplest, most reliable and easiest to emulate.
 
 PWM input signal: <br>
 Hz: 50 <br>
 Pulse: 0.5-2.5 ms <br>
 
-To generate a proper signal you need to calculate the relative pulse length. For that you need two other values which represent the overall pulse period and the pulse length. The difference of both mustn't be greater than the period itself. The period is decomposed in 4096 values which is equivalent to a 12 Bit accuracy (2^12). So the difference of both of those values mustn't be greater than 4096. This relative pulse length can be calculated by multiplying the Hz rate, the period length and the pulse length together.
+To generate a proper signal you need to calculate the relative pulse length. For that you need two other values which represent the overall pulse period and the pulse length. The difference of both mustn't be greater than the period itself. The period is decomposed in 4096 values which is equivalent to a 12 Bit accuracy (2^12). So the difference of both of those values mustn't be greater than 4096. This relative pulse length can be calculated by multiplying the Hz rate, the period and the pulse length together.
 
     50Hz:
 
@@ -24,7 +21,7 @@ To generate a proper signal you need to calculate the relative pulse length. For
 
         50Hz* 0.0025s * 4096 = 512 (relative pulse length)
 
-To summarize, to control the Naza V2 we need a relative pulse length that reaches from 102-512 (depends on calibration).
+To control the Naza V2 we need a relative pulse length that reaches from 102-512 (depends on calibration).
 
 
 Setup
