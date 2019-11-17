@@ -1,6 +1,6 @@
 # DJI Naza V2 C++ PWM Interface
 
-A C++ interface for Raspberry to interact with DJI Naza V2 Flight controller. The project is a diy solution for people who don't have access to dji's libraries but still need the accuracy/ advantages of the Naza V2. It allows the user to control the Naza V2 via. a Raspberry by installing this library and write their own program using the methods supplied by the library. The library does that by emulating the PWM signals which actually/ normally come from a receiver to control the Naza V2(drone). To generate the PWM signal it uses the [PWM/Servo Driver - I2C interface - PCA9685](https://www.adafruit.com/product/815). The lib consists of two different section, **manual** and **autonomous**. **Manual** offers standard functions to control the drone, which are immediately executed. **Autonomous** provides functions which require a serial connection(to decode gps, gyro/ acc information) to the Naza V2 to fly for example to differnt waypoints(is highly experimental and partly unfinished, continued [here](https://github.com/cy8berpunk/ros_airdrop)).
+A C++ interface for the Raspberry Pi to interact with the DJI Naza V2 Flight controller. The project is a diy solution for people who don't have access to dji's libraries but still need the accuracy/ advantages of the Naza V2. It allows the user to control the Naza V2 via. a Raspberry by installing this library and write their own program using the methods supplied by the library. The library does that by emulating the PWM signals which actually/ normally come from a receiver to control the Naza V2(drone). To generate the PWM signal it uses the [PWM/Servo Driver - I2C interface - PCA9685](https://www.adafruit.com/product/815). The lib consists of two different section, **manual** and **autonomous**. **Manual** offers standard functions to control the drone, which are immediately executed. **Autonomous** provides functions which require a serial connection(to decode gps, gyro/ acc information) to the Naza V2 to fly for example to differnt waypoints(is highly experimental and partly unfinished, continued [here](https://github.com/cy8berpunk/ros_airdrop)).
 
 ## Webinterface 
 [The Webinterface](https://github.com/MrGrimod/dji_naza_web_interface) is built on top of this project and uses the tools/ binaries from this project to access the Naza. It's based on PHP and Js Ajax, the PHP scripts directly access the binaries compiled by this project and can be used to test the lib.
@@ -55,69 +55,6 @@ in your own project and link libnaza by using `-lnaza` and `-lwiringPi` flag.
 ### Wiring
 
 Connect the PCA9685 over I2C with your raspberry pi and the Naza V2 input channels with the different output channels of the PCA9685.
-
-### Library functions
-
-#### Manual:
-
-- fly_throttle: <br>
-Sets the drone throttle for all motors. <br>
-*Corresponds to channel T*
-
-- fly_forward: <br>
-Lets the drone fly forward <br>
-*Corresponds to channel E*
-
-- fly_back: <br>
-Lets the drone fly backwards <br>
-*Corresponds to channel E*
-
-- fly_left: <br>
-Lets the drone fly sideways left <br>
-*Corresponds to channel A*
-
-- fly_right: <br>
-Lets the drone fly sideways right <br>
-*Corresponds to channel A*
-
-- fly_turn_right: <br>
-Lets the drone turn right <br>
-*Corresponds to channel R*
-
-- fly_turn_left: <br>
-Lets the drone turn left <br>
-*Corresponds to channel R*
-
-- set_neutral: <br>
-Sets all stick positions to neutral.
-
-- recalibrate: <br>
-Moves all sticks to throttle endpoints
-
-- set_flight_mode: <br>
-Sets the flight mode. You can select between: `gps, failsafe, selectable`
-*Corresponds to channel U*
-
-- arm_motors: <br>
-**Arms the motors**
-
-#### Autonomous:
-
-- auto_liftoff <br>
-Lets the drone take off.
-
-- auto_landing <br>
-Lets the drone land.
-
-- fly_to_gps_pos <br>
-Lets the drone fly to a certain position.
-
-- turn_to_deg <br>
-Lets the drone fly turn to a certain position.
-
-- auto_hover <br>
-Lets the drone hover.
-
 
 ### Examples
 
@@ -212,4 +149,67 @@ Edit the file /boot/config.txt and add the following line at the end : <br>
 5. If you have a system with udev rules that create `/dev/serial0`  and `/dev/serial1` (look if you have these one), and if so use `/dev/serial1` .
 
 Then reboot
+
+
+### Library functions
+
+#### Manual:
+
+- fly_throttle: <br>
+Sets the drone throttle for all motors. <br>
+*Corresponds to channel T*
+
+- fly_forward: <br>
+Lets the drone fly forward <br>
+*Corresponds to channel E*
+
+- fly_back: <br>
+Lets the drone fly backwards <br>
+*Corresponds to channel E*
+
+- fly_left: <br>
+Lets the drone fly sideways left <br>
+*Corresponds to channel A*
+
+- fly_right: <br>
+Lets the drone fly sideways right <br>
+*Corresponds to channel A*
+
+- fly_turn_right: <br>
+Lets the drone turn right <br>
+*Corresponds to channel R*
+
+- fly_turn_left: <br>
+Lets the drone turn left <br>
+*Corresponds to channel R*
+
+- set_neutral: <br>
+Sets all stick positions to neutral.
+
+- recalibrate: <br>
+Moves all sticks to throttle endpoints
+
+- set_flight_mode: <br>
+Sets the flight mode. You can select between: `gps, failsafe, selectable`
+*Corresponds to channel U*
+
+- arm_motors: <br>
+**Arms the motors**
+
+#### Autonomous:
+
+- auto_liftoff <br>
+Lets the drone take off.
+
+- auto_landing <br>
+Lets the drone land.
+
+- fly_to_gps_pos <br>
+Lets the drone fly to a certain position.
+
+- turn_to_deg <br>
+Lets the drone fly turn to a certain position.
+
+- auto_hover <br>
+Lets the drone hover.
 
