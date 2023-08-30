@@ -2,6 +2,9 @@
 
 A C++ interface for the Raspberry Pi to interact with the DJI Naza V2 Flight controller. The project is a diy solution for people who don't have access to dji's libraries but still need the accuracy/ advantages of the Naza V2. It allows the user to control the Naza V2 via. a Raspberry by installing this library and write their own program using the methods supplied by the library. The library does that by emulating the PWM signals which actually/ normally come from a receiver to control the Naza V2(drone). To generate the PWM signal it uses the [PWM/Servo Driver - I2C interface - PCA9685](https://www.adafruit.com/product/815). The lib consists of two different section, **manual** and **autonomous**. **Manual** offers standard functions to control the drone, which are immediately executed. **Autonomous** provides functions which require a serial connection(to decode gps, gyro/ acc information) to the Naza V2 to fly for example to differnt waypoints(is highly experimental and partly unfinished, continued [here](https://github.com/cy8berpunk/ros_airdrop)).
 
+
+Demonstration video can be watched [here](media/demo.mp4)
+
 ## Webinterface 
 [The Webinterface](https://github.com/MrGrimod/dji_naza_web_interface) is built on top of this project and uses the tools/ binaries from this project to access the Naza. It's based on PHP and Js Ajax, the PHP scripts directly access the binaries compiled by this project and can be used to test the lib.
 
